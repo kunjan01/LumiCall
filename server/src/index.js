@@ -1,6 +1,7 @@
 const express = require('express');
 const http = require('http');
 const socketIo = require('socket.io');
+const path = require('path');
 const cors = require('./middleware/cors');
 const config = require('./config');
 
@@ -14,6 +15,10 @@ const io = socketIo(server, {
 });
 
 app.use(cors);
+
+// Serve React static files
+const buildPath = path.join(__dirname, '../../../client/build');
+app.use(express.static(buildPath));
 
 io.on('connection', (socket) => {
     console.log('New client connected');
@@ -34,6 +39,11 @@ io.on('connection', (socket) => {
             id: socket.id,
         });
     });
+});
+
+// Serve index.html for all other routes (for React SPA)
+app.get('*', (req, res) => {
+    res.sendFile(path.join(buildPath, 'index.html'));
 });
 
 server.listen(config.PORT, () => {
