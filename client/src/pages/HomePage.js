@@ -1,18 +1,20 @@
 import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import '../styles/pages.css';
 
-const HomePage = () => {
+const HomePage = ({ onCreateRoom, onJoinRoom }) => {
     const [name, setName] = useState('');
     const [roomCode, setRoomCode] = useState('');
-    const history = useHistory();
 
-    const createRoom = () => {
-        const code = Math.random().toString(36).substring(2, 10).toUpperCase();
-        history.push(`/call/${code}`, { name });
+    const handleCreateRoom = () => {
+        if (name.trim()) {
+            onCreateRoom(name);
+        }
     };
 
-    const joinRoom = () => {
-        history.push(`/call/${roomCode}`, { name });
+    const handleJoinRoom = () => {
+        if (name.trim() && roomCode.trim()) {
+            onJoinRoom(name, roomCode);
+        }
     };
 
     return (
@@ -24,14 +26,14 @@ const HomePage = () => {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
             />
-            <button onClick={createRoom}>Create new room</button>
+            <button onClick={handleCreateRoom}>Create new room</button>
             <input
                 type="text"
                 placeholder="Enter room code"
                 value={roomCode}
                 onChange={(e) => setRoomCode(e.target.value)}
             />
-            <button onClick={joinRoom}>Join room</button>
+            <button onClick={handleJoinRoom}>Join room</button>
         </div>
     );
 };

@@ -1,2 +1,2 @@
-release: cd client && npm install && npm run build
-web: cd server && npm install && npm start
+release: cd client && npm install --legacy-peer-deps && NODE_OPTIONS=--openssl-legacy-provider npm run build
+web: node server/src/index.js

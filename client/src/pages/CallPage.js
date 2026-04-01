@@ -1,23 +1,19 @@
-import React, { useEffect } from 'react';
-import { useWebRTC } from '../hooks/useWebRTC';
-import { useRingLight } from '../hooks/useRingLight';
+import React from 'react';
+import useWebRTC from '../hooks/useWebRTC';
+import useRingLight from '../hooks/useRingLight';
 import VideoGrid from '../components/VideoGrid';
 import ControlPanel from '../components/ControlPanel';
 import ChatBox from '../components/ChatBox';
-import './pages.css';
+import '../styles/pages.css';
 
-const CallPage = ({ roomId, userName }) => {
-    const { peers, addPeer, removePeer } = useWebRTC(roomId, userName);
-    const { activateRingLight } = useRingLight();
-
-    useEffect(() => {
-        activateRingLight();
-    }, [activateRingLight]);
+const CallPage = ({ roomCode, userName, onLeave }) => {
+    const { peers, addPeer, removePeer } = useWebRTC(roomCode);
+    const isBright = useRingLight();
 
     return (
         <div className="call-page">
             <VideoGrid peers={peers} />
-            <ControlPanel />
+            <ControlPanel onLeave={onLeave} />
             <ChatBox />
         </div>
     );
