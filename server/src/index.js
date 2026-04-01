@@ -17,7 +17,7 @@ const io = socketIo(server, {
 app.use(cors);
 
 // Serve React static files
-const buildPath = path.join(__dirname, '../../../client/build');
+const buildPath = path.join(__dirname, '../../client/build');
 app.use(express.static(buildPath));
 
 io.on('connection', (socket) => {
